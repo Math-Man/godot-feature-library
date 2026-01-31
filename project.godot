@@ -22,6 +22,10 @@ EventBus="*uid://bdj47lx546cr5"
 
 project/assembly_name="GodotFeatureLibrary"
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+
 [input]
 
 interact={

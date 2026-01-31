@@ -13,6 +13,8 @@ public partial class DialogueService : Node
     [Export(PropertyHint.Range, "0.0,0.2")] public float PitchVariation { get; set; } = 0.05f;
     [Export(PropertyHint.Range, "0.0,0.3")] public float SoundCooldown { get; set; } = 0.10f;
 
+    private const float FastForwardMultiplier = 5f;
+
     private readonly Queue<DialogueEvent> _queue = new();
     private DialogueEvent _current;
     private float _elapsed;
@@ -20,6 +22,7 @@ public partial class DialogueService : Node
     private float _lingerRemaining;
     private bool _typewriterComplete;
     private bool _lingerComplete;
+    private bool _fastForward;
     private int _lastVisibleChars;
     private float _soundCooldownRemaining;
 
@@ -53,13 +56,23 @@ public partial class DialogueService : Node
         ProcessLinger((float)delta);
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        if (_current == null) return;
+        if (@event is not InputEventMouseButton) return;
+        if (!@event.IsPressed()) return;
+
+        HandleInput();
+        GetViewport().SetInputAsHandled();
+    }
+
     public override void _UnhandledInput(InputEvent @event)
     {
         if (_current == null) return;
         if (!@event.IsPressed() || @event.IsEcho()) return;
 
-        // Only respond to keyboard, gamepad buttons, and mouse clicks
-        if (@event is not (InputEventKey or InputEventJoypadButton or InputEventMouseButton)) return;
+        // Only respond to keyboard and gamepad buttons
+        if (@event is not (InputEventKey or InputEventJoypadButton)) return;
 
         HandleInput();
         GetViewport().SetInputAsHandled();
@@ -88,6 +101,7 @@ public partial class DialogueService : Node
         _elapsed = 0f;
         _typewriterComplete = false;
         _lingerComplete = false;
+        _fastForward = false;
         _lastVisibleChars = 0;
         _soundCooldownRemaining = 0f;
 
@@ -127,7 +141,8 @@ public partial class DialogueService : Node
     {
         if (_typewriterComplete) return;
 
-        _elapsed += delta;
+        float effectiveDelta = _fastForward ? delta * FastForwardMultiplier : delta;
+        _elapsed += effectiveDelta;
         _soundCooldownRemaining -= delta;
 
         float t = Mathf.Clamp(_elapsed / _duration, 0f, 1f);
@@ -178,7 +193,8 @@ public partial class DialogueService : Node
     {
         if (!_typewriterComplete || _lingerComplete) return;
 
-        _lingerRemaining -= delta;
+        float effectiveDelta = _fastForward ? delta * FastForwardMultiplier : delta;
+        _lingerRemaining -= effectiveDelta;
         if (_lingerRemaining <= 0f)
         {
             _lingerComplete = true;
@@ -190,9 +206,8 @@ public partial class DialogueService : Node
     {
         if (!_typewriterComplete && IsInterruptible)
         {
-            // Skip to end of typewriter
-            DialogueLabel.VisibleRatio = 1f;
-            _typewriterComplete = true;
+            // Speed up typewriter and linger
+            _fastForward = true;
         }
         else if (_lingerComplete && !IsAutoDismiss)
         {
