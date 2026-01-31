@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dyq3o67mt8awl"]
+
+[ext_resource type="Script" uid="uid://tbjkii4r6yk2" path="res://DialogueEngine/DialogueTest.cs" id="1_ie4e4"]
+[ext_resource type="PackedScene" uid="uid://dww6vf4k86pxd" path="res://DialogueEngine/dialogue_box.tscn" id="1_rb1gg"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ie4e4"]
+
+[sub_resource type="Environment" id="Environment_3cncu"]
+
+[node name="DialogueDemo" type="Node3D" unique_id=1052383251]
+
+[node name="DialogueTest" type="Node" parent="." unique_id=1922830730]
+script = ExtResource("1_ie4e4")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=2137807351]
+transform = Transform3D(1, 0, 0, 0, 0.73947835, 0.67318034, 0, -0.67318034, 0.73947835, 0, 1.3046403, 1.5459629)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=659024460]
+transform = Transform3D(0.7218207, 0, 0.69208014, 0, 1, 0, -0.69208014, 0, 0.7218207, 0, 0, 0)
+mesh = SubResource("BoxMesh_ie4e4")
+
+[node name="Dialogue Box" parent="." unique_id=979529112 instance=ExtResource("1_rb1gg")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=879229592]
+environment = SubResource("Environment_3cncu")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=676209729]
+transform = Transform3D(0.8660254, 0.35355338, -0.35355338, 0, 0.7071068, 0.7071068, 0.50000006, -0.6123725, 0.6123725, 0, 1, 0)
+
+[node name="Control" type="Control" parent="." unique_id=1224921756]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control" unique_id=2020392383]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Press Mouse Button 1 to progress dialogue"

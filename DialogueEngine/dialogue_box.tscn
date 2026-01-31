@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://dww6vf4k86pxd"]
+
+[ext_resource type="Script" uid="uid://dms2r6si5e1hs" path="res://DialogueEngine/DialogueService.cs" id="1_vo865"]
+[ext_resource type="AudioStream" uid="uid://kfskyvgs47tj" path="res://DialogueEngine/Sound/key-press-01.wav" id="2_gyhvw"]
+[ext_resource type="AudioStream" uid="uid://ygleekm43qmp" path="res://DialogueEngine/Sound/key-press-02.wav" id="3_k0ygs"]
+[ext_resource type="AudioStream" uid="uid://by6nalpw614f1" path="res://DialogueEngine/Sound/key-press-03.wav" id="4_tld7u"]
+[ext_resource type="AudioStream" uid="uid://75q41va3fisn" path="res://DialogueEngine/Sound/key-press-04.wav" id="5_hufkt"]
+[ext_resource type="AudioStream" uid="uid://crehjhy5psg7i" path="res://DialogueEngine/Sound/key-press-05.wav" id="6_3bwf2"]
+[ext_resource type="AudioStream" uid="uid://buoshmaaoqj1f" path="res://DialogueEngine/Sound/key-press-06.wav" id="7_pm2jx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tpmx7"]
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 0.2627451)
+
+[node name="Dialogue Box" type="Control" unique_id=979529112]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Dialogue Service" type="Node" parent="." unique_id=1554310897 node_paths=PackedStringArray("DialogueLabel", "DialogueTitle", "DialogueContainer", "TypewriterPlayer")]
+script = ExtResource("1_vo865")
+DialogueLabel = NodePath("../Margin/Panel/VBoxContainer/Dialogue")
+DialogueTitle = NodePath("../Margin/Panel/VBoxContainer/Title")
+DialogueContainer = NodePath("../Margin")
+TypewriterPlayer = NodePath("TypewriterPlayer")
+TypewriterSounds = Array[AudioStream]([ExtResource("2_gyhvw"), ExtResource("3_k0ygs"), ExtResource("4_tld7u"), ExtResource("5_hufkt"), ExtResource("6_3bwf2"), ExtResource("7_pm2jx")])
+
+[node name="TypewriterPlayer" type="AudioStreamPlayer" parent="Dialogue Service" unique_id=1407416271]
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1774485596]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 25
+
+[node name="Panel" type="PanelContainer" parent="Margin" unique_id=2068475674]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_tpmx7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Margin/Panel" unique_id=1915848720]
+layout_mode = 2
+
+[node name="Title" type="RichTextLabel" parent="Margin/Panel/VBoxContainer" unique_id=2089826388]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9997284, 0.22464544, 0.1699684, 1)
+text = "Camilla"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="Dialogue" type="RichTextLabel" parent="Margin/Panel/VBoxContainer" unique_id=1404581762]
+layout_mode = 2
+text = "No mask? No Mask!"
+fit_content = true
+horizontal_alignment = 1

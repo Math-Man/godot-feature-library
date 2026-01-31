@@ -1,0 +1,73 @@
+# Godot 4+ specific ignores
+.godot/
+
+.import/
+export.cfg
+
+# Godot-specific ignores
+*.tmp
+*.translation
+
+# Imported translations (can be generated from the .po files)
+*.mo
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+
+# Android builds
+/android/
+
+# System/Editor files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Archives
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+
+# Temporary files
+*.temp
+*.bak
+*.backup
+
+# Build outputs
+builds/
+dist/
+Export/
+*.exe
+*.pck
+
+# OS generated files
+.directory
+.fuse_hidden*
+.nfs*
+
+# Tools directory (Laigter and other external tools) - only root level
+/Tools/
+!/tools/
+!/tools/laigter/
+# Exclude tools/laigter except for ExportTemplate_1
+/tools/laigter/*
+!/tools/laigter/ExportTemplate_1
