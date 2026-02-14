@@ -1,6 +1,6 @@
 # Godot Feature Library
 
-A collection of reusable, modular features for Godot 4 (C# / .NET 8). Each feature is self-contained in its own folder and can be copied into any project.
+A collection of reusable, modular features for Godot 4.6. Each feature is self-contained in its own folder and can be copied into any project.
 
 ## Features
 
@@ -37,7 +37,7 @@ PostProcess                └─ GameInput                └─ DialogueEngine
                          Overlay
                            ├─ EventBus               Inventory
                            └─ DebugConsole*             ├─ EventBus
-                                                       ├─ GameInput
+                                                        ├─ GameInput
                          WorldSpaceUI                   ├─ Interaction
                            ├─ EventBus*                 └─ DebugConsole*
                            └─ DialogueEngine*
