@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cosqb8nqwa84e" path="res://PostProcess/PostProcessManager.cs" id="1_mgr"]
 [ext_resource type="Shader" uid="uid://bsu365r6y4ucs" path="res://PostProcess/Demo/tint.gdshader" id="2_tint"]
 [ext_resource type="Script" uid="uid://dn4su5sn3webs" path="res://PostProcess/Demo/DemoPostProcess.cs" id="3_demo"]
-[ext_resource type="Shader" path="res://PostProcess/Demo/vignette.gdshader" id="4_vignette"]
+[ext_resource type="Shader" uid="uid://cqmb2o1037vpk" path="res://PostProcess/Demo/vignette.gdshader" id="4_vignette"]
 
 [sub_resource type="Environment" id="Environment_1"]
 background_mode = 1
@@ -83,19 +83,37 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="TintBBC" type="BackBufferCopy" parent="PostProcessManager/CanvasLayer/EffectsContainer"]
+[node name="TintBBC" type="BackBufferCopy" parent="PostProcessManager/CanvasLayer/EffectsContainer" unique_id=1843725609]
 copy_mode = 2
 
-[node name="Tint" type="ColorRect" parent="PostProcessManager/CanvasLayer/EffectsContainer/TintBBC"]
+[node name="Tint" type="ColorRect" parent="PostProcessManager/CanvasLayer/EffectsContainer/TintBBC" unique_id=1112333861]
 visible = false
 material = SubResource("ShaderMaterial_tint")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="VignetteBBC" type="BackBufferCopy" parent="PostProcessManager/CanvasLayer/EffectsContainer"]
+[node name="VignetteBBC" type="BackBufferCopy" parent="PostProcessManager/CanvasLayer/EffectsContainer" unique_id=1811657156]
 copy_mode = 2
 
-[node name="Vignette" type="ColorRect" parent="PostProcessManager/CanvasLayer/EffectsContainer/VignetteBBC"]
+[node name="Vignette" type="ColorRect" parent="PostProcessManager/CanvasLayer/EffectsContainer/VignetteBBC" unique_id=1210308228]
 visible = false
 material = SubResource("ShaderMaterial_vignette")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = -100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DemoPostProcess" type="Node" parent="." unique_id=594399791]
 script = ExtResource("3_demo")

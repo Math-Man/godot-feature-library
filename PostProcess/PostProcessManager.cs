@@ -146,7 +146,8 @@ public partial class PostProcessManager : Node
                 // Ensure ColorRect covers full viewport (anchors don't work under Node2D)
                 colorRect.Position = Vector2.Zero;
                 colorRect.Size = viewportSize;
-
+                colorRect.SetAnchorsPreset(Control.LayoutPreset.FullRect);
+                
                 string name = colorRect.Name;
                 if (_shaders.ContainsKey(name))
                 {
