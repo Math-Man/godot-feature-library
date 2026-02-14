@@ -8,4 +8,7 @@
     <Content Include="DialogueEngine\Readme.md" />
     <Content Include="EventBus\Readme.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DebugConsole\demo\" />
+  </ItemGroup>
 </Project>

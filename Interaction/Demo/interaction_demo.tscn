@@ -1,0 +1,95 @@
+[gd_scene format=3 uid="uid://csnq4dmlv0kqo"]
+
+[ext_resource type="Script" uid="uid://b0lgkonoh178p" path="res://Interaction/CursorInteraction.cs" id="1_eqf6h"]
+[ext_resource type="Script" uid="uid://b6a4vtunah2si" path="res://Interaction/Demo/DemoMouseLook.cs" id="1_ggxpy"]
+[ext_resource type="Script" uid="uid://csttltrw3bfao" path="res://Interaction/Demo/DemoInteractable.cs" id="3_14fxw"]
+[ext_resource type="Script" uid="uid://okyvuh2sr6rs" path="res://Interaction/Demo/DemoInteractableMovement.cs" id="3_pvtnv"]
+
+[sub_resource type="Environment" id="Environment_eqf6h"]
+background_mode = 1
+background_color = Color(0.10861897, 0.3369626, 0.46811604, 1)
+ambient_light_color = Color(0.10980392, 0.3372549, 0.46666667, 1)
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.10980392, 0.3372549, 0.46666667, 1)
+volumetric_fog_emission = Color(0.0125733735, 0.086418174, 0.13334185, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eqf6h"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_14fxw"]
+
+[sub_resource type="PrismMesh" id="PrismMesh_pvtnv"]
+
+[node name="Interaction_Demo" type="Node3D" unique_id=1419661552]
+
+[node name="Environment" type="Node" parent="." unique_id=2047161678]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1132480497]
+environment = SubResource("Environment_eqf6h")
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment" unique_id=91127980]
+transform = Transform3D(0.040562212, -0.61221385, -0.7896511, 0.37626237, -0.7227663, 0.57968575, -0.9256249, -0.32062936, 0.20103607, 0, 1.6764501, 0)
+light_volumetric_fog_energy = 5.0
+shadow_enabled = true
+
+[node name="Player Camera" type="Camera3D" parent="." unique_id=171968875]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825024, 0)
+script = ExtResource("1_ggxpy")
+
+[node name="Cursor Interaction" type="Node" parent="Player Camera" unique_id=1329813699]
+script = ExtResource("1_eqf6h")
+
+[node name="Control" type="Control" parent="." unique_id=2006287679]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="Control" unique_id=1816309862]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Press 'escape' to free the cursor
+Try clicking on the objects, check the console."
+
+[node name="Objects" type="Node3D" parent="." unique_id=932868296]
+
+[node name="Demo Interactable Cube Root" type="Node3D" parent="Objects" unique_id=438600980]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.89129686, -2.5424168)
+
+[node name="Demo Interactable Movement" type="Node" parent="Objects/Demo Interactable Cube Root" unique_id=1876386379]
+script = ExtResource("3_pvtnv")
+
+[node name="Demo Interactable" type="Area3D" parent="Objects/Demo Interactable Cube Root" unique_id=368640614]
+transform = Transform3D(0.5931198, 0.7991599, 0.09773685, -0.43568903, 0.21650997, 0.87366956, 0.6770406, -0.56077355, 0.47660154, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_14fxw")
+
+[node name="Demo Interactable Collider" type="CollisionShape3D" parent="Objects/Demo Interactable Cube Root/Demo Interactable" unique_id=384320838]
+shape = SubResource("BoxShape3D_eqf6h")
+
+[node name="Demo Interactable Mesh" type="MeshInstance3D" parent="Objects/Demo Interactable Cube Root/Demo Interactable" unique_id=614450078]
+mesh = SubResource("BoxMesh_14fxw")
+
+[node name="Demo Interactable Prism Root" type="Node3D" parent="Objects" unique_id=1605085655]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2014112, 0.89129686, -0.6430862)
+
+[node name="Demo Interactable Movement" type="Node" parent="Objects/Demo Interactable Prism Root" unique_id=951036353]
+script = ExtResource("3_pvtnv")
+
+[node name="Demo Interactable" type="Area3D" parent="Objects/Demo Interactable Prism Root" unique_id=1021572098]
+transform = Transform3D(0.173352, 0.75089985, 0.6372586, -0.71523774, -0.3488301, 0.6056009, 0.6770406, -0.56077355, 0.47660154, 0, 0, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("3_14fxw")
+RequireFreeCursor = true
+
+[node name="Demo Interactable Collider" type="CollisionShape3D" parent="Objects/Demo Interactable Prism Root/Demo Interactable" unique_id=220417547]
+shape = SubResource("BoxShape3D_eqf6h")
+
+[node name="Demo Interactable Mesh" type="MeshInstance3D" parent="Objects/Demo Interactable Prism Root/Demo Interactable" unique_id=1519746300]
+mesh = SubResource("PrismMesh_pvtnv")
+
+[node name="Label3D" type="Label3D" parent="Objects" unique_id=462204713]
+transform = Transform3D(-0.0633391, -0.06560565, -0.99583334, 0.022428224, 0.99749136, -0.06714139, 0.99774003, -0.026587443, -0.061708774, 2.2014112, 1.8881168, -0.62010074)
+text = "Click on this while the cursor is free"

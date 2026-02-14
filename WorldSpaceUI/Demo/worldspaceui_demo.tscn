@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://cqx6pkmthwdx"]
+
+[ext_resource type="PackedScene" uid="uid://cyqwgcr0td5j8" path="res://WorldSpaceUI/WorldSpaceScreen.tscn" id="1_screen"]
+[ext_resource type="Script" uid="uid://dmhqpgfcjq5nn" path="res://WorldSpaceUI/Demo/MovingScreenScript.cs" id="2_02yea"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.15, 0.15, 0.2, 1)
+ambient_light_color = Color(0.3, 0.3, 0.35, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(6, 0.1, 6)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.2, 0.2, 0.25, 1)
+
+[node name="WorldSpaceUIDemo" type="Node3D" unique_id=1945817660]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1305270256]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1804458853]
+transform = Transform3D(0.86601907, 0.3535631, -0.3535593, 0, 0.70710295, 0.7071106, 0.500011, -0.61237127, 0.61236465, 0, 2, 0)
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=886172807]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1646265419]
+transform = Transform3D(1, 0, 0, 0, 0.9847534, 0.17395642, 0, -0.17395642, 0.9847534, 0, 0.8847919, 1.2)
+
+[node name="Node3D" type="Node3D" parent="." unique_id=776109034]
+
+[node name="WorldSpaceScreen" parent="Node3D" unique_id=1796741058 instance=ExtResource("1_screen")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0.36271107)
+
+[node name="Rotator" type="Node" parent="Node3D" unique_id=1361307504]
+script = ExtResource("2_02yea")

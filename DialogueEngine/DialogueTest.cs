@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using GodotFeatureLibrary.Events;
+using GodotFeatureLibrary.GameInput;
 
 namespace GodotFeatureLibrary.DialogueEngine;
 
@@ -17,19 +19,18 @@ public partial class DialogueTest : Node
 
     static DialogueTest()
     {
-        // Curves now use 0-1 range for X (progress), 0-1 for Y (visibility)
         SimpleCurve = new Curve();
         SimpleCurve.AddPoint(new Vector2(0, 0));
-        SimpleCurve.AddPoint(new Vector2(1, 1)); // linear
+        SimpleCurve.AddPoint(new Vector2(1, 1));
 
         PurposefulCurve = new Curve();
         PurposefulCurve.AddPoint(new Vector2(0, 0));
-        PurposefulCurve.AddPoint(new Vector2(0.4f, 0.2f)); // slow start
-        PurposefulCurve.AddPoint(new Vector2(1, 1));       // faster finish
+        PurposefulCurve.AddPoint(new Vector2(0.4f, 0.2f));
+        PurposefulCurve.AddPoint(new Vector2(1, 1));
 
         FinalCurve = new Curve();
         FinalCurve.AddPoint(new Vector2(0, 0));
-        FinalCurve.AddPoint(new Vector2(0.7f, 0.5f)); // very slow start
+        FinalCurve.AddPoint(new Vector2(0.7f, 0.5f));
         FinalCurve.AddPoint(new Vector2(1, 1));
     }
 
@@ -40,13 +41,13 @@ public partial class DialogueTest : Node
         new("Indeed, it's time. We all have laid aside disguise but you.", DialogueMode.Dialogue, PurposefulCurve, 4f, 1.5f, "Cassilda", CassildaColor),
         new("I wear no mask.", DialogueMode.Dialogue, SimpleCurve, 2f, 2f, "Stranger", StrangerColor),
         new("No mask? No mask!", DialogueMode.Dialogue, FinalCurve, 2f, 1f, "Camilla", CamillaColor),
+        new("...", DialogueMode.Dialogue, SimpleCurve, 1f),
     ];
 
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("interact") && _currentQuoteIndex < _quotes.Count)
-        {
-            EventBus.EventBus.EventBus.Instance.Publish(_quotes[_currentQuoteIndex++]);
-        }
+        if (!Input.IsActionJustPressed(InputMapping.INTERACTION_PRIMARY)) return;
+        EventBus.Instance.Publish(_quotes[_currentQuoteIndex % _quotes.Count]);
+        _currentQuoteIndex++;
     }
 }

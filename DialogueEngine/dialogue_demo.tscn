@@ -37,4 +37,4 @@ offset_bottom = 40.0
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "Press Mouse Button 1 to progress dialogue"
+text = "Press interact_primary to progress dialogue"

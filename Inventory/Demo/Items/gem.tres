@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDeclaration" format=3 uid="uid://b5ya12t5cvyqa"]
+
+[ext_resource type="Script" uid="uid://bht4pifgt7xu2" path="res://Inventory/ItemDeclaration.cs" id="1"]
+[ext_resource type="Texture2D" uid="uid://c1nx5kkikasyk" path="res://Inventory/Demo/Assets/gem.png" id="1_ikcfa"]
+
+[resource]
+script = ExtResource("1")
+Id = "gem"
+DisplayName = "Blue Gem"
+Descriptions = Dictionary[String, String]({
+"default": "A small blue gemstone that glows faintly."
+})
+Icon = ExtResource("1_ikcfa")
+MaxStackSize = 10

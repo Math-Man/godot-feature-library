@@ -1,6 +1,6 @@
 using System;
 
-namespace GodotFeatureLibrary.EventBus.EventBus;
+namespace GodotFeatureLibrary.Events;
 
 public interface IEventBus
 {

@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://cyqwgcr0td5j8"]
+
+[ext_resource type="Script" uid="uid://eqhdct7u5fd7" path="res://WorldSpaceUI/WorldSpaceScreenInput.cs" id="1_input"]
+[ext_resource type="Script" uid="uid://j18ema43yfe6" path="res://WorldSpaceUI/WorldSpaceScreenSync.cs" id="2_sync"]
+[ext_resource type="Script" uid="uid://cgv11n0430jh3" path="res://WorldSpaceUI/FakeCursor.cs" id="3_cursor"]
+[ext_resource type="Script" uid="uid://uh1wdwlbtc0i" path="res://WorldSpaceUI/Demo/ButtonPressScript.cs" id="3_d5dun"]
+[ext_resource type="Texture2D" uid="uid://xe1hntjryswi" path="res://WorldSpaceUI/Arrow1.png" id="4_arrow"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_screen"]
+size = Vector2(1.78, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_pmsdo"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_screen"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_pmsdo")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_screen"]
+size = Vector3(1.78, 1, 0.1)
+
+[node name="WorldSpaceScreen" type="Node3D" unique_id=1580548537]
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=1416208138]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(961, 540)
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="SubViewport" unique_id=1286586164]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="SubViewport/Control" unique_id=503818949]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Cursor" type="TextureRect" parent="SubViewport/Control" unique_id=660748567]
+layout_mode = 0
+offset_right = 36.0
+offset_bottom = 57.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_arrow")
+script = ExtResource("3_cursor")
+
+[node name="Button" type="Button" parent="SubViewport/Control" unique_id=1808099239]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.5
+offset_top = -15.5
+offset_right = 41.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Press me!"
+script = ExtResource("3_d5dun")
+
+[node name="ScreenMesh" type="MeshInstance3D" parent="." unique_id=1277162488 node_paths=PackedStringArray("TargetViewport", "ScreenCollider")]
+mesh = SubResource("QuadMesh_screen")
+surface_material_override/0 = SubResource("StandardMaterial3D_screen")
+script = ExtResource("2_sync")
+TargetViewport = NodePath("../SubViewport")
+ScreenCollider = NodePath("ScreenArea/CollisionShape3D")
+
+[node name="ScreenArea" type="Area3D" parent="ScreenMesh" unique_id=1050050243]
+collision_layer = 128
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ScreenMesh/ScreenArea" unique_id=1932086173]
+shape = SubResource("BoxShape3D_screen")
+
+[node name="ScreenInput" type="Node" parent="." unique_id=1439836090]
+script = ExtResource("1_input")

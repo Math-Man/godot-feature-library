@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using GodotFeatureLibrary.Events;
+using GodotFeatureLibrary.Typewriter;
 
 namespace GodotFeatureLibrary.DialogueEngine;
 
@@ -8,23 +10,18 @@ public partial class DialogueService : Node
     [Export] public RichTextLabel DialogueLabel { get; set; }
     [Export] public RichTextLabel DialogueTitle { get; set; }
     [Export] public Control DialogueContainer { get; set; }
-    [Export] public AudioStreamPlayer TypewriterPlayer { get; set; }
     [Export] public AudioStream[] TypewriterSounds { get; set; }
     [Export(PropertyHint.Range, "0.0,0.2")] public float PitchVariation { get; set; } = 0.05f;
     [Export(PropertyHint.Range, "0.0,0.3")] public float SoundCooldown { get; set; } = 0.10f;
+    [Export] public float FastForwardMultiplier { get; set; } = 5f;
 
-    private const float FastForwardMultiplier = 5f;
-
+    private TypewriterEffect _typewriter;
     private readonly Queue<DialogueEvent> _queue = new();
     private DialogueEvent _current;
-    private float _elapsed;
     private float _duration;
     private float _lingerRemaining;
-    private bool _typewriterComplete;
     private bool _lingerComplete;
     private bool _fastForward;
-    private int _lastVisibleChars;
-    private float _soundCooldownRemaining;
 
     private bool IsInterruptible => _current?.Mode switch
     {
@@ -42,9 +39,26 @@ public partial class DialogueService : Node
         _ => false
     };
 
+    private bool ShouldLockControls => _current?.Mode switch
+    {
+        DialogueMode.Narration => false,
+        DialogueMode.Dialogue => true,
+        DialogueMode.Cutscene => true,
+        _ => false
+    };
+
     public override void _Ready()
     {
-        EventBus.EventBus.EventBus.Instance.Subscribe<DialogueEvent>(OnDialogueEvent);
+        _typewriter = new TypewriterEffect
+        {
+            Sounds = TypewriterSounds,
+            PitchVariation = PitchVariation,
+            SoundCooldown = SoundCooldown,
+            FastForwardMultiplier = FastForwardMultiplier
+        };
+        AddChild(_typewriter);
+
+        EventBus.Instance.Subscribe<DialogueEvent>(OnDialogueEvent);
         Hide();
     }
 
@@ -52,10 +66,12 @@ public partial class DialogueService : Node
     {
         if (_current == null) return;
 
-        ProcessTypewriter((float)delta);
+        _typewriter.Update((float)delta);
         ProcessLinger((float)delta);
     }
 
+    // Mouse input uses _Input (catches events BEFORE UI consumes them)
+    // This ensures clicking anywhere advances dialogue, even over UI elements
     public override void _Input(InputEvent @event)
     {
         if (_current == null) return;
@@ -66,12 +82,14 @@ public partial class DialogueService : Node
         GetViewport().SetInputAsHandled();
     }
 
+    // Keyboard/gamepad uses _UnhandledInput (catches events AFTER other nodes)
+    // This lets menus and other systems get first dibs on input
+    // Dialogue only advances if nothing else consumed the event
     public override void _UnhandledInput(InputEvent @event)
     {
         if (_current == null) return;
         if (!@event.IsPressed() || @event.IsEcho()) return;
 
-        // Only respond to keyboard and gamepad buttons
         if (@event is not (InputEventKey or InputEventJoypadButton)) return;
 
         HandleInput();
@@ -83,6 +101,10 @@ public partial class DialogueService : Node
         if (e.Override)
         {
             _queue.Clear();
+            if (_current != null && ShouldLockControls)
+            {
+                EventBus.Instance?.Publish(new DialogueDismissedEvent(_current.Mode));
+            }
             ShowDialogue(e);
         }
         else if (_current == null)
@@ -98,15 +120,15 @@ public partial class DialogueService : Node
     private void ShowDialogue(DialogueEvent e)
     {
         _current = e;
-        _elapsed = 0f;
-        _typewriterComplete = false;
         _lingerComplete = false;
         _fastForward = false;
-        _lastVisibleChars = 0;
-        _soundCooldownRemaining = 0f;
+
+        if (ShouldLockControls)
+        {
+            EventBus.Instance?.Publish(new DialogueStartedEvent(e.Mode));
+        }
 
         DialogueLabel.Text = e.Content;
-        DialogueLabel.VisibleRatio = 0f;
 
         // Handle title
         if (DialogueTitle != null)
@@ -134,64 +156,13 @@ public partial class DialogueService : Node
         _duration = e.Duration;
         _lingerRemaining = e.LingerDuration;
 
+        _typewriter.Start(DialogueLabel, _duration, e.TypewriterCurve);
         Show();
-    }
-
-    private void ProcessTypewriter(float delta)
-    {
-        if (_typewriterComplete) return;
-
-        float effectiveDelta = _fastForward ? delta * FastForwardMultiplier : delta;
-        _elapsed += effectiveDelta;
-        _soundCooldownRemaining -= delta;
-
-        float t = Mathf.Clamp(_elapsed / _duration, 0f, 1f);
-
-        if (_current.TypewriterCurve != null)
-        {
-            // SampleBaked expects 0-1 normalized input
-            DialogueLabel.VisibleRatio = _current.TypewriterCurve.SampleBaked(t);
-        }
-        else
-        {
-            // Linear fallback
-            DialogueLabel.VisibleRatio = t;
-        }
-
-        // Play sound when new characters appear
-        int visibleChars = DialogueLabel.VisibleCharacters;
-        if (visibleChars > _lastVisibleChars)
-        {
-            TryPlayTypewriterSound();
-            _lastVisibleChars = visibleChars;
-        }
-
-        if (t >= 1f)
-        {
-            _typewriterComplete = true;
-        }
-    }
-
-    private void TryPlayTypewriterSound()
-    {
-        if (TypewriterPlayer == null || TypewriterSounds == null || TypewriterSounds.Length == 0)
-            return;
-
-        // Cooldown prevents clicks from stacking, but tails can overlap
-        if (_soundCooldownRemaining > 0f)
-            return;
-
-        _soundCooldownRemaining = SoundCooldown;
-
-        var sound = TypewriterSounds[GD.RandRange(0, TypewriterSounds.Length - 1)];
-        TypewriterPlayer.Stream = sound;
-        TypewriterPlayer.PitchScale = (float)GD.RandRange(1f - PitchVariation, 1f + PitchVariation);
-        TypewriterPlayer.Play();
     }
 
     private void ProcessLinger(float delta)
     {
-        if (!_typewriterComplete || _lingerComplete) return;
+        if (!_typewriter.IsComplete || _lingerComplete) return;
 
         float effectiveDelta = _fastForward ? delta * FastForwardMultiplier : delta;
         _lingerRemaining -= effectiveDelta;
@@ -204,10 +175,11 @@ public partial class DialogueService : Node
 
     private void HandleInput()
     {
-        if (!_typewriterComplete && IsInterruptible)
+        if (!_typewriter.IsComplete && IsInterruptible)
         {
             // Speed up typewriter and linger
             _fastForward = true;
+            _typewriter.SetFastForward(true);
         }
         else if (_lingerComplete && !IsAutoDismiss)
         {
@@ -226,6 +198,11 @@ public partial class DialogueService : Node
 
     private void Dismiss()
     {
+        if (ShouldLockControls)
+        {
+            EventBus.Instance?.Publish(new DialogueDismissedEvent(_current.Mode));
+        }
+
         _current = null;
         Hide();
 

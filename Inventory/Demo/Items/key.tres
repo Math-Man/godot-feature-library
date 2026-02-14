@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemDeclaration" format=3 uid="uid://by4vifu0kaw3t"]
+
+[ext_resource type="Script" uid="uid://bht4pifgt7xu2" path="res://Inventory/ItemDeclaration.cs" id="1"]
+[ext_resource type="Texture2D" uid="uid://dvaesr0rbn74c" path="res://Inventory/Demo/Assets/key.png" id="1_jjq36"]
+
+[resource]
+script = ExtResource("1")
+Id = "key"
+DisplayName = "Rusty Key"
+Descriptions = Dictionary[String, String]({
+"default": "An old key covered in rust. Might open something."
+})
+Icon = ExtResource("1_jjq36")

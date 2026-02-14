@@ -23,15 +23,12 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Dialogue Service" type="Node" parent="." unique_id=1554310897 node_paths=PackedStringArray("DialogueLabel", "DialogueTitle", "DialogueContainer", "TypewriterPlayer")]
+[node name="Dialogue Service" type="Node" parent="." unique_id=1554310897 node_paths=PackedStringArray("DialogueLabel", "DialogueTitle", "DialogueContainer")]
 script = ExtResource("1_vo865")
 DialogueLabel = NodePath("../Margin/Panel/VBoxContainer/Dialogue")
 DialogueTitle = NodePath("../Margin/Panel/VBoxContainer/Title")
 DialogueContainer = NodePath("../Margin")
-TypewriterPlayer = NodePath("TypewriterPlayer")
 TypewriterSounds = Array[AudioStream]([ExtResource("2_gyhvw"), ExtResource("3_k0ygs"), ExtResource("4_tld7u"), ExtResource("5_hufkt"), ExtResource("6_3bwf2"), ExtResource("7_pm2jx")])
-
-[node name="TypewriterPlayer" type="AudioStreamPlayer" parent="Dialogue Service" unique_id=1407416271]
 
 [node name="Margin" type="MarginContainer" parent="." unique_id=1774485596]
 layout_mode = 1

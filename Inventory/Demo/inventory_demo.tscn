@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://dm4xxkmwkre00"]
+
+[ext_resource type="Script" uid="uid://cx1e17no8qsc3" path="res://Inventory/Demo/DemoInventorySetup.cs" id="1_gmm0p"]
+[ext_resource type="Script" uid="uid://cefhge30be2i" path="res://Inventory/InventoryService.cs" id="2_ko8or"]
+[ext_resource type="Script" uid="uid://b6a4vtunah2si" path="res://Interaction/Demo/DemoMouseLook.cs" id="3_55pyg"]
+[ext_resource type="PackedScene" path="res://Inventory/UI/inventory_panel.tscn" id="3_w5svn"]
+[ext_resource type="Script" uid="uid://b0lgkonoh178p" path="res://Interaction/CursorInteraction.cs" id="4_w5svn"]
+[ext_resource type="Script" uid="uid://xmcq4oyhscj0" path="res://Inventory/ItemPickup.cs" id="6_1wqfr"]
+[ext_resource type="Resource" uid="uid://da2xxdayoi27l" path="res://Inventory/Demo/Items/coin.tres" id="7_5h1e2"]
+[ext_resource type="Script" uid="uid://okyvuh2sr6rs" path="res://Interaction/Demo/DemoInteractableMovement.cs" id="8_5h1e2"]
+[ext_resource type="Resource" uid="uid://b5ya12t5cvyqa" path="res://Inventory/Demo/Items/gem.tres" id="9_4n3ih"]
+[ext_resource type="Resource" uid="uid://by4vifu0kaw3t" path="res://Inventory/Demo/Items/key.tres" id="10_vrkvy"]
+
+[sub_resource type="Environment" id="Environment_mgj00"]
+background_mode = 1
+background_color = Color(0.10861897, 0.3369626, 0.46811604, 1)
+ambient_light_color = Color(0.10980392, 0.3372549, 0.46666667, 1)
+volumetric_fog_enabled = true
+volumetric_fog_albedo = Color(0.10980392, 0.3372549, 0.46666667, 1)
+volumetric_fog_emission = Color(0.0125733735, 0.086418174, 0.13334185, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1wqfr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p2tak"]
+albedo_color = Color(0.81334245, 0.6569998, 0, 1)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_5h1e2"]
+points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1wqfr"]
+albedo_color = Color(0.13154829, 0.7673451, 0.7778134, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5h1e2"]
+albedo_color = Color(0.6531706, 0.50252813, 0.3827517, 1)
+
+[node name="Inventory Demo" type="Node3D" unique_id=2068540783]
+
+[node name="Environment" type="Node" parent="." unique_id=2090643357]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment" unique_id=1974122128]
+environment = SubResource("Environment_mgj00")
+
+[node name="Sun" type="DirectionalLight3D" parent="Environment" unique_id=942704594]
+transform = Transform3D(0.040562212, -0.61221385, -0.7896511, 0.37626237, -0.7227663, 0.57968575, -0.9256249, -0.32062936, 0.20103607, 0, 1.6764501, 0)
+light_volumetric_fog_energy = 5.0
+shadow_enabled = true
+
+[node name="Demo Inventory Setup" type="Node" parent="." unique_id=1382978920]
+script = ExtResource("1_gmm0p")
+
+[node name="Inventory Service" type="Node" parent="." unique_id=1886179042]
+script = ExtResource("2_ko8or")
+ItemDirectory = "res://Inventory/Demo/Items/"
+
+[node name="InventoryPanel" parent="." unique_id=1154995176 instance=ExtResource("3_w5svn")]
+
+[node name="Player Camera" type="Camera3D" parent="." unique_id=160937908]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0642829, 0)
+script = ExtResource("3_55pyg")
+
+[node name="Cursor Interaction" type="Node" parent="Player Camera" unique_id=648973834]
+script = ExtResource("4_w5svn")
+
+[node name="Items" type="Node3D" parent="." unique_id=471175651]
+
+[node name="Coin" type="Area3D" parent="Items" unique_id=1129436399 node_paths=PackedStringArray("PickupRoot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.707754, -1.8304598)
+script = ExtResource("6_1wqfr")
+Declaration = ExtResource("7_5h1e2")
+Quantity = 10
+PickupRoot = NodePath(".")
+metadata/_custom_type_script = "uid://xmcq4oyhscj0"
+
+[node name="Meshes" type="Node3D" parent="Items/Coin" unique_id=509334228]
+
+[node name="Coin Mesh3" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=1470610064]
+transform = Transform3D(0.082027026, -0.059353676, 2.5944318e-09, -1.3189674e-16, -4.42572e-09, -0.10124867, 0.059353676, 0.082027026, -3.5855154e-09, 0, -0.096303105, 0)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh4" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=255489303]
+transform = Transform3D(0.08202703, -0.059353676, 2.5944316e-09, 0, -4.4257202e-09, -0.101248674, 0.059353676, 0.08202703, -3.5855157e-09, 0.011130393, -0.039002836, 0.071621895)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh2" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=557421811]
+transform = Transform3D(0.082027026, -0.059353676, 2.5944318e-09, -1.3189674e-16, -4.42572e-09, -0.10124867, 0.059353676, 0.082027026, -3.5855154e-09, 0, 0, 0)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=2077890662]
+transform = Transform3D(0.08202703, -0.059353676, 2.5944316e-09, 0, -4.4257202e-09, -0.101248674, 0.059353676, 0.08202703, -3.5855157e-09, 0.057689607, -0.10188931, 0.071621895)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh5" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=1813753130]
+transform = Transform3D(-0.08673239, 0.052237794, -2.283386e-09, -4.233153e-16, -4.4257202e-09, -0.10124868, -0.052237794, -0.08673239, 3.7911927e-09, 0.03736357, -0.041047096, -0.05681181)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh6" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=1033618358]
+transform = Transform3D(-0.08673238, 0.052237783, -2.2833861e-09, -6.5157374e-17, -4.4257202e-09, -0.10124867, -0.052237783, -0.08673238, 3.7911936e-09, 0.020243404, 0.016253173, -0.12724245)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh7" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=985108396]
+transform = Transform3D(-0.08673239, 0.052237794, -2.283386e-09, -4.233153e-16, -4.4257202e-09, -0.10124868, -0.052237794, -0.08673239, 3.7911927e-09, 0.03736357, 0.05525601, -0.05681181)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="Coin Mesh8" type="MeshInstance3D" parent="Items/Coin/Meshes" unique_id=1999803935]
+transform = Transform3D(-0.08673238, 0.052237783, -2.2833861e-09, -6.5157374e-17, -4.4257202e-09, -0.10124867, -0.052237783, -0.08673238, 3.7911936e-09, -0.02615054, -0.046633303, -0.12332308)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_p2tak")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Items/Coin" unique_id=1688063251]
+transform = Transform3D(0.32933012, -0.23829891, 1.0416376e-08, 0, -1.7768812e-08, -0.40650302, 0.23829891, 0.32933012, -1.4395477e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_5h1e2")
+
+[node name="Rotator" type="Node" parent="Items/Coin" unique_id=258404158]
+script = ExtResource("8_5h1e2")
+
+[node name="Gem" type="Area3D" parent="Items" unique_id=1396894107 node_paths=PackedStringArray("PickupRoot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0137535, 0.6066146, -0.8000334)
+script = ExtResource("6_1wqfr")
+Declaration = ExtResource("9_4n3ih")
+Quantity = 3
+PickupRoot = NodePath(".")
+metadata/_custom_type_script = "uid://xmcq4oyhscj0"
+
+[node name="Meshes" type="Node3D" parent="Items/Gem" unique_id=1691786407]
+
+[node name="Gem Mesh" type="MeshInstance3D" parent="Items/Gem/Meshes" unique_id=416570812]
+transform = Transform3D(0.17573388, -0.1271587, 5.5582836e-09, 0, -9.481618e-09, -0.21691412, 0.1271587, 0.17573388, -7.681572e-09, -0.03569603, -0.076394856, 0.036623)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_1wqfr")
+
+[node name="Gem Mesh2" type="MeshInstance3D" parent="Items/Gem/Meshes" unique_id=1537392090]
+transform = Transform3D(0.1466697, -0.106128246, 4.639013e-09, 0, -7.913477e-09, -0.18103924, 0.106128246, 0.1466697, -6.411136e-09, 0.08445895, 0.10417479, 0.07294881)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_1wqfr")
+
+[node name="Gem Mesh3" type="MeshInstance3D" parent="Items/Gem/Meshes" unique_id=304370712]
+transform = Transform3D(0.1904505, -0.13780746, 6.0237557e-09, 0, -1.0275644e-08, -0.23507933, 0.13780746, 0.1904505, -8.324856e-09, 0, 0, -0.07892269)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_1wqfr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Items/Gem" unique_id=1754943115]
+transform = Transform3D(0.32933012, -0.23829891, 1.0416376e-08, 0, -1.7768812e-08, -0.40650302, 0.23829891, 0.32933012, -1.4395477e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_5h1e2")
+
+[node name="Rotator" type="Node" parent="Items/Gem" unique_id=868201892]
+script = ExtResource("8_5h1e2")
+
+[node name="Key" type="Area3D" parent="Items" unique_id=1971383343 node_paths=PackedStringArray("PickupRoot")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1321397, 0.6066146, -0.7219194)
+script = ExtResource("6_1wqfr")
+Declaration = ExtResource("10_vrkvy")
+PickupRoot = NodePath(".")
+metadata/_custom_type_script = "uid://xmcq4oyhscj0"
+
+[node name="Key Mesh" type="MeshInstance3D" parent="Items/Key" unique_id=77355043]
+transform = Transform3D(0.32933012, -0.23829891, 1.0416376e-08, 0, -1.7768812e-08, -0.40650302, 0.23829891, 0.32933012, -1.4395477e-08, 0, 0, 0)
+mesh = SubResource("BoxMesh_1wqfr")
+surface_material_override/0 = SubResource("StandardMaterial3D_5h1e2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Items/Key" unique_id=482686707]
+transform = Transform3D(0.32933012, -0.23829891, 1.0416376e-08, 0, -1.7768812e-08, -0.40650302, 0.23829891, 0.32933012, -1.4395477e-08, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_5h1e2")
+
+[node name="Rotator" type="Node" parent="Items/Key" unique_id=1532872124]
+script = ExtResource("8_5h1e2")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=186250085]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4921048, -2.1798353)
+text = "Press 'Tab' to open the inventory
+Click on cubes to collect them
+Try clicking on the items in the inventory"

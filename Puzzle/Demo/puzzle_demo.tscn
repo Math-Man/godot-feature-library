@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://3tf2jeb8grfk"]
+
+[ext_resource type="Script" uid="uid://c3o72123nhpe2" path="res://Puzzle/PuzzleInteraction.cs" id="1_puzzle"]
+[ext_resource type="Script" uid="uid://b0lgkonoh178p" path="res://Interaction/CursorInteraction.cs" id="2_cursor"]
+[ext_resource type="Script" uid="uid://samwl4qu0lk7" path="res://Puzzle/Demo/DemoPuzzleSetup.cs" id="3_setup"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.15, 0.15, 0.2, 1)
+ambient_light_color = Color(0.4, 0.4, 0.45, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(6, 0.1, 6)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.25, 0.25, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_low"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="Material_low"]
+albedo_color = Color(0.8, 0.3, 0.3, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_high"]
+radius = 0.35
+height = 0.7
+radial_segments = 32
+rings = 16
+
+[sub_resource type="StandardMaterial3D" id="Material_high"]
+albedo_color = Color(0.3, 0.7, 0.9, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape_trigger"]
+size = Vector3(0.8, 0.8, 0.8)
+
+[node name="PuzzleDemo" type="Node3D" unique_id=517705100]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1359731570]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=823715300]
+transform = Transform3D(0.86601907, 0.3535631, -0.3535593, 0, 0.70710295, 0.7071106, 0.500011, -0.61237127, 0.61236465, 0, 2, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=209202740]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.342, 0, -0.342, 0.94, 0, 1.2, 2.5)
+current = true
+
+[node name="PuzzleCamera" type="Camera3D" parent="." unique_id=2078540839]
+transform = Transform3D(1, 0, 0, 0, 0.981, 0.191, 0, -0.191, 0.981, 0, 0.5, 1)
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=1658420484]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="PuzzleObject" type="Node3D" parent="." unique_id=818849114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Mesh_low" type="MeshInstance3D" parent="PuzzleObject" unique_id=783180417]
+mesh = SubResource("BoxMesh_low")
+surface_material_override/0 = SubResource("Material_low")
+
+[node name="Mesh_high" type="MeshInstance3D" parent="PuzzleObject" unique_id=1439162554]
+visible = false
+mesh = SubResource("SphereMesh_high")
+surface_material_override/0 = SubResource("Material_high")
+
+[node name="PuzzleTrigger" type="Area3D" parent="." unique_id=1565941458]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PuzzleTrigger" unique_id=1599780359]
+shape = SubResource("BoxShape_trigger")
+
+[node name="PuzzleInteraction" type="Node" parent="PuzzleTrigger" unique_id=1959991501]
+script = ExtResource("1_puzzle")
+GeometryRootName = "PuzzleObject"
+
+[node name="DemoPuzzleSetup" type="Node" parent="." unique_id=602801744]
+script = ExtResource("3_setup")
+
+[node name="CursorInteraction" type="Node" parent="." unique_id=1720748383]
+script = ExtResource("2_cursor")
+
+[node name="HintLabel" type="Label" parent="." unique_id=742210435]
+offset_right = 450.0
+offset_bottom = 60.0
+text = "Left Click on object: enter puzzle mode (camera + LOD swap)
+Right Click: exit puzzle mode"

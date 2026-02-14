@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://b8unwrjysnksx"]
+
+[ext_resource type="Script" uid="uid://db2hcaptfgtpt" path="res://Overlay/Demo/DemoOverlay.cs" id="1_demo"]
+[ext_resource type="PackedScene" path="res://Overlay/Demo/overlay_content.tscn" id="2_content"]
+[ext_resource type="Script" uid="uid://b6a4vtunah2si" path="res://Interaction/Demo/DemoMouseLook.cs" id="3_mouselook"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.15, 0.15, 0.2, 1)
+ambient_light_color = Color(0.4, 0.4, 0.45, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(6, 0.1, 6)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.25, 0.25, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cube"]
+size = Vector3(0.6, 0.6, 0.6)
+
+[sub_resource type="StandardMaterial3D" id="Material_cube"]
+albedo_color = Color(0.3, 0.6, 0.9, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_1"]
+radius = 0.3
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Material_sphere"]
+albedo_color = Color(0.8, 0.3, 0.5, 1)
+
+[node name="OverlayDemo" type="Node3D" unique_id=1301962332]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=638591706]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1478910303]
+transform = Transform3D(0.86601907, 0.3535631, -0.3535593, 0, 0.70710295, 0.7071106, 0.500011, -0.61237127, 0.61236465, 0, 2, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=728616582]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.342, 0, -0.342, 0.94, 0, 1.2, 2)
+script = ExtResource("3_mouselook")
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=2062267485]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="Anchor" type="Node3D" parent="." unique_id=1629237253]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+
+[node name="Cube" type="MeshInstance3D" parent="Anchor" unique_id=687126978]
+mesh = SubResource("BoxMesh_cube")
+surface_material_override/0 = SubResource("Material_cube")
+
+[node name="Sphere" type="MeshInstance3D" parent="." unique_id=2008433200]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0.3, 0.3)
+mesh = SubResource("SphereMesh_1")
+surface_material_override/0 = SubResource("Material_sphere")
+
+[node name="DemoOverlay" type="Node" parent="." unique_id=1619022043]
+script = ExtResource("1_demo")
+OverlayScene = ExtResource("2_content")
+AnchorPath = NodePath("../Anchor")
+
+[node name="HintLabel" type="Label" parent="." unique_id=333225663]
+offset_right = 550.0
+offset_bottom = 60.0
+text = "WASD + Mouse: move | Esc: toggle cursor
+1: Screen overlay | 2: Anchored | 3: Bounds | 4: Line to cube | 5: Bounds connector"

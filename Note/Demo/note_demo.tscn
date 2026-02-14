@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://cimhog3j0g0uh"]
+
+[ext_resource type="Script" uid="uid://hcp05scni0ea" path="res://Note/NoteService.cs" id="1_svc"]
+[ext_resource type="Script" uid="uid://b8xlqx8hhtycy" path="res://Note/Note.cs" id="2_note"]
+[ext_resource type="Script" uid="uid://ddi6tekfdqcur" path="res://Note/Demo/DemoNoteSetup.cs" id="3_setup"]
+[ext_resource type="Script" uid="uid://b6a4vtunah2si" path="res://Interaction/Demo/DemoMouseLook.cs" id="4_mouselook"]
+[ext_resource type="PackedScene" uid="uid://do5lqskk1gfc4" path="res://Note/Demo/note_layout.tscn" id="5_layout"]
+
+[sub_resource type="Environment" id="Environment_1"]
+background_mode = 1
+background_color = Color(0.15, 0.15, 0.2, 1)
+ambient_light_color = Color(0.4, 0.4, 0.45, 1)
+ambient_light_energy = 0.5
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(6, 0.1, 6)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.25, 0.25, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_paper"]
+size = Vector3(0.3, 0.01, 0.4)
+
+[sub_resource type="StandardMaterial3D" id="Material_paper"]
+albedo_color = Color(0.92, 0.87, 0.76, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape_note"]
+size = Vector3(0.4, 0.3, 0.5)
+
+[node name="NoteDemo" type="Node3D" unique_id=372320347]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1848585479]
+environment = SubResource("Environment_1")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1890789878]
+transform = Transform3D(0.866, 0.354, -0.354, 0, 0.707, 0.707, 0.5, -0.612, 0.612, 0, 2, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=81397129]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.342, 0, -0.342, 0.94, 0, 1.2, 2)
+script = ExtResource("4_mouselook")
+
+[node name="Floor" type="MeshInstance3D" parent="." unique_id=62088011]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="Paper" type="MeshInstance3D" parent="." unique_id=1610898217]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("BoxMesh_paper")
+surface_material_override/0 = SubResource("Material_paper")
+
+[node name="Note" type="Area3D" parent="." unique_id=1440376389]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+collision_layer = 4
+collision_mask = 4
+script = ExtResource("2_note")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Note" unique_id=347843603]
+shape = SubResource("BoxShape_note")
+
+[node name="NoteService" type="Node" parent="." unique_id=1338688993]
+script = ExtResource("1_svc")
+
+[node name="DemoNoteSetup" type="Node" parent="." unique_id=1485066530]
+script = ExtResource("3_setup")
+NoteLayoutScene = ExtResource("5_layout")
+
+[node name="Crosshair" type="Label" parent="." unique_id=158858046]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintLabel" type="Label" parent="." unique_id=677335982]
+offset_right = 550.0
+offset_bottom = 60.0
+text = "WASD + Mouse: move | Esc: toggle cursor
+Look at note + Left Click: open | Left Click: next page | Right Click: back"

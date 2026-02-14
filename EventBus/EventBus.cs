@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
-namespace GodotFeatureLibrary.EventBus.EventBus;
+namespace GodotFeatureLibrary.Events;
 
 public partial class EventBus : Node, IEventBus
 {

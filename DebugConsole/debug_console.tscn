@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://eeyldmxue1m7"]
+
+[ext_resource type="Script" uid="uid://c0kv8jyttcwiw" path="res://DebugConsole/DebugConsoleService.cs" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.050980393, 0.050980393, 0.101960786, 0.4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lyvgb"]
+bg_color = Color(9.1448425e-07, 0.34055606, 0.16787505, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0.39792708, 0.20066097, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nufkf"]
+bg_color = Color(0, 0.550273, 0.28726488, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m1ivq"]
+bg_color = Color(0, 0.8773582, 0.47128248, 1)
+
+[sub_resource type="Theme" id="Theme_nufkf"]
+VScrollBar/styles/grabber = SubResource("StyleBoxFlat_lyvgb")
+VScrollBar/styles/grabber_highlight = SubResource("StyleBoxFlat_nufkf")
+VScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_m1ivq")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+bg_color = Color(0.019607844, 0.019607844, 0.05882353, 0.48235294)
+
+[node name="DebugConsoleService" type="Node" unique_id=338064629]
+script = ExtResource("1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=458835927]
+layer = 200
+
+[node name="Panel" type="PanelContainer" parent="CanvasLayer" unique_id=855672787]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.568
+offset_bottom = -0.06402588
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/Panel" unique_id=95198328]
+layout_mode = 2
+
+[node name="Output" type="RichTextLabel" parent="CanvasLayer/Panel/VBox" unique_id=1440360704]
+layout_mode = 2
+size_flags_vertical = 3
+focus_mode = 2
+theme = SubResource("Theme_nufkf")
+theme_override_font_sizes/normal_font_size = 14
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+
+[node name="Input" type="LineEdit" parent="CanvasLayer/Panel/VBox" unique_id=1370227985]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
+placeholder_text = "Type a command..."

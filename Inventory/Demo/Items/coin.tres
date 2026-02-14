@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemDeclaration" format=3 uid="uid://da2xxdayoi27l"]
+
+[ext_resource type="Script" uid="uid://bht4pifgt7xu2" path="res://Inventory/ItemDeclaration.cs" id="1"]
+[ext_resource type="Texture2D" uid="uid://bgmrjutumhm7t" path="res://Inventory/Demo/Assets/coin.png" id="1_lhoau"]
+
+[resource]
+script = ExtResource("1")
+Id = "coin"
+DisplayName = "Gold Coin"
+Descriptions = Dictionary[String, String]({
+"default": "A shiny gold coin. Worthless here, but nice to collect."
+})
+Icon = ExtResource("1_lhoau")
+MaxStackSize = 99

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://c2lgwwmllfk60"]
+
+[ext_resource type="PackedScene" uid="uid://eeyldmxue1m7" path="res://DebugConsole/debug_console.tscn" id="1_n4qke"]
+[ext_resource type="Script" uid="uid://k2wkbbv0mid8" path="res://DebugConsole/demo/ExampleCommandRegisteration.cs" id="2_g6txc"]
+
+[node name="Debug Console Demo" type="Node3D" unique_id=213676242]
+
+[node name="DebugConsoleService" parent="." unique_id=989383271 instance=ExtResource("1_n4qke")]
+
+[node name="Example Command Registeration" type="Node" parent="." unique_id=445130758]
+script = ExtResource("2_g6txc")
+
+[node name="HintLabel" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 500.0
+offset_bottom = 40.0
+text = "Press ` (backtick) to toggle the debug console"

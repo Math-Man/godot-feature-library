@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[node name="OverlayContent" type="PanelContainer"]
+custom_minimum_size = Vector2(120, 40)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "Overlay!"
